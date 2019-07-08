@@ -25,9 +25,9 @@ import java.util.stream.Collectors;
 import static org.obolibrary.oboformat.parser.OBOFormatConstants.OboFormatTag.*;
 import static org.obolibrary.oboformat.parser.OBOFormatConstants.OboFormatTag.TAG_SYNONYM;
 
+@Log
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-@Log
 public class TermService {
 
     private TermRepository termRepository;
@@ -36,19 +36,20 @@ public class TermService {
         this.termRepository = termRepository;
     }
 
+    @Transactional
     public void importTerms(InputStream input) throws IOException {
         OBOFormatParser parser = new OBOFormatParser();
         OBODoc doc = parser.parse(new InputStreamReader(input));
 
         List<Term> terms = doc.getTermFrames()
                 .stream()
-                .map(frame -> createTerm(frame))
+                .map(frame -> parseTerm(frame))
                 .collect(Collectors.toList());
         termRepository.saveAll(terms);
     }
 
-    private Term createTerm(Frame frame) {
-        log.info("Parsing : " + frame);
+    public Term parseTerm(Frame frame) {
+        log.info(String.format("Parsing : %s", frame.toString()));
 
         Term term = new Term();
 

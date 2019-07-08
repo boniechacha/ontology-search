@@ -24,7 +24,6 @@ public class TermController {
         termFacade.importTerms(file);
     }
 
-
     @GetMapping
     Page<Term> queryTerms(@RequestParam("q") String q, Pageable pageable) {
         return termFacade.query(q, pageable);
