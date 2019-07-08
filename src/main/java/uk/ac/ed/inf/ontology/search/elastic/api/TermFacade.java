@@ -1,0 +1,32 @@
+package uk.ac.ed.inf.ontology.search.elastic.api;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import uk.ac.ed.inf.ontology.search.elastic.domain.Term;
+import uk.ac.ed.inf.ontology.search.elastic.service.TermService;
+
+import java.io.IOException;
+
+@Component
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+public class TermFacade {
+
+    private TermService termService;
+
+    public TermFacade(TermService termService) {
+        this.termService = termService;
+    }
+
+    @Transactional
+    public void importTerms(MultipartFile file) throws IOException {
+        termService.importTerms(file.getInputStream());
+    }
+
+    public Page<Term> query(String q, Pageable pageable) {
+        return termService.query(q,pageable);
+    }
+}
