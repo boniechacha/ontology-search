@@ -9,11 +9,12 @@ import uk.ac.ed.inf.ontology.search.elastic.domain.Term;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping(TermController.PATH)
 public class TermController {
-    public static final String PATH = "/term";
+    public static final String PATH = "/api/v1/term";
 
     @Inject
     private TermFacade termFacade;
@@ -24,8 +25,13 @@ public class TermController {
         termFacade.importTerms(file);
     }
 
-    @GetMapping
-    Page<Term> queryTerms(@RequestParam("q") String q, Pageable pageable) {
-        return termFacade.query(q, pageable);
+    @GetMapping("/search")
+    Page<Term> search(@RequestParam("q") String q, Pageable pageable) {
+        return termFacade.search(q, pageable);
+    }
+
+    @GetMapping("/list")
+    List<Term> findByNames(@RequestParam("name") List<String> names) {
+        return termFacade.findAll(names);
     }
 }

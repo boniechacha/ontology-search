@@ -19,6 +19,7 @@ import uk.ac.ed.inf.ontology.search.elastic.repository.TermRepository;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,5 +83,11 @@ public class TermService {
                 .withQuery(QueryBuilders.queryStringQuery(q))
                 .build();
         return termRepository.search(query);
+    }
+
+    public List<Term> findAll(Collection<String> names) {
+        return names.stream()
+                .map(name-> termRepository.findFirstByName(name))
+                .collect(Collectors.toList());
     }
 }

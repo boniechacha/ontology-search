@@ -10,6 +10,8 @@ import uk.ac.ed.inf.ontology.search.elastic.domain.Term;
 import uk.ac.ed.inf.ontology.search.elastic.service.TermService;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 
 @Component
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -26,7 +28,11 @@ public class TermFacade {
         termService.importTerms(file.getInputStream());
     }
 
-    public Page<Term> query(String q, Pageable pageable) {
+    public Page<Term> search(String q, Pageable pageable) {
         return termService.query(q,pageable);
+    }
+
+    public List<Term> findAll(Collection<String> names) {
+        return termService.findAll(names);
     }
 }
