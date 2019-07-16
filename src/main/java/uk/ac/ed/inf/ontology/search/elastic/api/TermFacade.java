@@ -1,5 +1,6 @@
 package uk.ac.ed.inf.ontology.search.elastic.api;
 
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -24,12 +25,12 @@ public class TermFacade {
     }
 
     @Transactional
-    public void importTerms(MultipartFile file) throws IOException {
-        termService.importTerms(file.getInputStream());
+    public void importTerms(MultipartFile file) throws IOException{
+        termService.importOBO(file.getInputStream());
     }
 
-    public Page<Term> search(String q, Pageable pageable) {
-        return termService.query(q,pageable);
+    public Page<Term> search(String q, String namespace, Pageable pageable) {
+        return termService.query(q, namespace, pageable);
     }
 
     public List<Term> findAll(Collection<String> names) {
