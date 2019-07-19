@@ -9,7 +9,10 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,19 +27,26 @@ public class Term {
     @NotEmpty
     @NotNull
     private String name;
-    private String def;
-    private String comment;
 
     @NotEmpty
     @NotNull
     private String namespace;
-    private List<String> synonyms;
+
+    private String def;
+    private Set<String> synonyms;
+    private Set<String> notes;
 
     public Term(String namespace) {
         this.namespace = namespace;
+        synonyms = new LinkedHashSet<>();
+        notes = new LinkedHashSet<>();
     }
 
     public static String cleanId(String id) {
         return id.replaceAll("[^A-Za-z0-9]", "_");
+    }
+
+    public void addNote(String note) {
+        this.notes.add(note);
     }
 }
