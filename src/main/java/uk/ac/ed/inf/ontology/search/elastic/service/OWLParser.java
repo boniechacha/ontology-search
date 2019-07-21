@@ -4,26 +4,31 @@ package uk.ac.ed.inf.ontology.search.elastic.service;
 import lombok.extern.java.Log;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import uk.ac.ed.inf.ontology.search.elastic.domain.Term;
-
-import javax.print.DocFlavor;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Log
 @Component
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class OWLParser {
-    public static final List<String> NAME_PROPS = List.of("label");
-    public static final List<String> DEFINITION_PROPS = List.of("IAO_0000115", "has_definition", "IAO_0000600");
-    public static final List<String> SYNONYM_PROPS = List.of("IAO_0000118", "seeAlso");
-    public static final List<String> NOTES_PROPS = List.of("comment", "IAO_0000600");
+
+    @Value("${ontology.owl.iri.short}")
+    private boolean USE_IRI_SHORTNAME;
+    @Value("${ontology.owl.iri.name}")
+    private List<String> NAME_PROPS;
+    @Value("${ontology.owl.iri.definition}")
+    private List<String> DEFINITION_PROPS;
+    @Value("${ontology.owl.iri.synonym}")
+    private List<String> SYNONYM_PROPS;
+    @Value("${ontology.owl.iri.notes}")
+    private List<String> NOTES_PROPS;
 
 
     public List<Term> parse(InputStream input, String namespace) throws OWLOntologyCreationException {
@@ -81,7 +86,7 @@ public class OWLParser {
 
     private String fetchOne(Set<OWLAnnotationAssertionAxiom> annotations, Collection<String> props) {
         for (OWLAnnotationAssertionAxiom a : annotations) {
-            if (props.contains(a.getProperty().getIRI().getShortForm())) {
+            if (props.contains(getIRIName(a))) {
                 annotations.remove(a);
                 return ((OWLLiteral) a.getValue()).getLiteral();
             }
@@ -90,13 +95,18 @@ public class OWLParser {
         return null;
     }
 
+    private String getIRIName(OWLAnnotationAssertionAxiom a) {
+        if(USE_IRI_SHORTNAME) return a.getProperty().getIRI().getShortForm();
+        else return a.getProperty().getIRI().toString();
+    }
+
     private Set<String> fetchAll(Set<OWLAnnotationAssertionAxiom> annotations, Collection<String> props) {
 
         Set<OWLAnnotationAssertionAxiom> toRemove = new LinkedHashSet<>();
 
         Set<String> values = annotations.stream()
                 .filter(a -> {
-                    if (props.contains(a.getProperty().getIRI().getShortForm())) {
+                    if (props.contains(getIRIName(a))) {
                         toRemove.add(a);
                         return true;
                     } else return false;

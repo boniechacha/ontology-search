@@ -22,7 +22,8 @@ public class TermController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    void importTerms(@RequestParam("file") MultipartFile file, @RequestParam("namespace") String namespace) throws IOException, OWLOntologyCreationException {
+    void importTerms(@RequestParam("file") MultipartFile file,
+                     @RequestParam("namespace") String namespace) throws IOException, OWLOntologyCreationException {
         termFacade.importTerms(file,namespace);
     }
 
