@@ -7,26 +7,28 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Mapping;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static uk.ac.ed.inf.ontology.search.elastic.domain.Term.INDEX_NAME;
-import static uk.ac.ed.inf.ontology.search.elastic.domain.Term.MAPPING_CONFIG;
+import static uk.ac.ed.inf.ontology.search.elastic.domain.Term.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(indexName = INDEX_NAME,type = INDEX_NAME)
 @Mapping(mappingPath = MAPPING_CONFIG)
+@Setting(settingPath = SETTING_CONFIG)
+@Document(indexName = INDEX_NAME, type = INDEX_NAME)
 public class Term {
 
     public static final String INDEX_NAME = "term";
-    public static final String MAPPING_CONFIG = "/elasticsearch/term.json";
     public static final String NAMESPACE_FIELD = "namespace";
+    public static final String MAPPING_CONFIG = "/elasticsearch/term-mapping.json";
+    public static final String SETTING_CONFIG = "/elasticsearch/term-setting.json";
 
     @Id
     private String id;

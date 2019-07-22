@@ -1,0 +1,22 @@
+{
+  "analysis": {
+    "analyzer": {
+      "term_analyzer": {
+        "type": "custom",
+        "tokenizer": "standard",
+        "filter": [
+          "standard",
+          "lowercase",
+          "term_ngram"
+        ]
+      }
+    },
+    "filter": {
+      "term_ngram": {
+        "type": "nGram",
+        "min_gram": 2,
+        "max_gram": 100
+      }
+    }
+  }
+}

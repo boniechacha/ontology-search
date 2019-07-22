@@ -1,8 +1,0 @@
-{
-  "term":{
-    "properties":{
-      "namespace": { "type":"keyword"}
-    }
-
-  }
-}
