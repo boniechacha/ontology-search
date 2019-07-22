@@ -6,20 +6,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Mapping;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
+
+import static uk.ac.ed.inf.ontology.search.elastic.domain.Term.INDEX_NAME;
+import static uk.ac.ed.inf.ontology.search.elastic.domain.Term.MAPPING_CONFIG;
 
 @Getter
 @Setter
-@Document(indexName = "term")
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Document(indexName = INDEX_NAME,type = INDEX_NAME)
+@Mapping(mappingPath = MAPPING_CONFIG)
 public class Term {
+
+    public static final String INDEX_NAME = "term";
+    public static final String MAPPING_CONFIG = "/elasticsearch/term.json";
+    public static final String NAMESPACE_FIELD = "namespace";
 
     @Id
     private String id;

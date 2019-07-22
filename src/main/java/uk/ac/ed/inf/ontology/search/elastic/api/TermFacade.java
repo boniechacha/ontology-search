@@ -46,4 +46,8 @@ public class TermFacade {
     public List<Term> findAll(Collection<String> names) {
         return termService.findAll(names);
     }
+
+    public List<String> listNamespaces() {
+        return termService.findAllNamespaces();
+    }
 }

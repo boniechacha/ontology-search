@@ -12,4 +12,5 @@ public interface TermRepository extends ElasticsearchRepository<Term, String> {
     List<Term> findAllByNameIn(Collection<String> names);
 
     Term findFirstByName(String name);
+
 }

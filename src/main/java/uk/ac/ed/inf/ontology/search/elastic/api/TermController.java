@@ -38,4 +38,9 @@ public class TermController {
     List<Term> findByNames(@RequestParam("name") List<String> names) {
         return termFacade.findAll(names);
     }
+
+    @GetMapping("/namespaces")
+    List<String> listNamespaces() {
+        return termFacade.listNamespaces();
+    }
 }
