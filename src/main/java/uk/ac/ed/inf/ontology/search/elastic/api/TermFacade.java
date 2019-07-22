@@ -15,6 +15,9 @@ import uk.ac.ed.inf.ontology.search.elastic.service.TermService;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+
+import static org.apache.commons.io.FilenameUtils.removeExtension;
 
 @Component
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -28,19 +31,21 @@ public class TermFacade {
     }
 
     @Transactional
-    public void importTerms(MultipartFile file, String namespace) throws IOException, OWLOntologyCreationException {
+    public void importTerms(MultipartFile file, Optional<String> namespace) throws IOException, OWLOntologyCreationException {
         if (file.getOriginalFilename().endsWith(OBO_EXTENSION))
-            termService.importOBO(file.getInputStream(), namespace);
+            termService.importOBO(file.getInputStream(), namespace.orElse(""));
         else {
-            if (StringUtils.isEmpty(namespace))
-                namespace = FilenameUtils.removeExtension(file.getOriginalFilename());
-
-            termService.importOWL(file.getInputStream(), namespace);
+            termService.importOWL(
+                    file.getInputStream(),
+                    namespace.orElse(
+                            removeExtension(file.getOriginalFilename())
+                    )
+            );
         }
     }
 
-    public Page<Term> search(String q, String namespace, Pageable pageable) {
-        return termService.query(q, namespace, pageable);
+    public Page<Term> search(String q, Optional<String> namespace, Pageable pageable) {
+        return termService.query(q, namespace.orElse(""), pageable);
     }
 
     public List<Term> findAll(Collection<String> names) {

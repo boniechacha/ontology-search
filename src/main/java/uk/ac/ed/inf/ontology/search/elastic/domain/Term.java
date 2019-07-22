@@ -56,6 +56,7 @@ public class Term {
     }
 
     public void addNote(String note) {
+        if(notes == null) notes = new LinkedHashSet<>();
         this.notes.add(note);
     }
 }

@@ -11,6 +11,7 @@ import uk.ac.ed.inf.ontology.search.elastic.domain.Term;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(TermController.PATH)
@@ -23,13 +24,13 @@ public class TermController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     void importTerms(@RequestParam("file") MultipartFile file,
-                     @RequestParam("namespace") String namespace) throws IOException, OWLOntologyCreationException {
-        termFacade.importTerms(file,namespace);
+                     @RequestParam("namespace") Optional<String> namespace) throws IOException, OWLOntologyCreationException {
+        termFacade.importTerms(file, namespace);
     }
 
     @GetMapping("/search")
     Page<Term> search(@RequestParam("q") String q,
-                      @RequestParam("namespace") String namespace,
+                      @RequestParam("namespace") Optional<String> namespace,
                       Pageable pageable) {
         return termFacade.search(q, namespace, pageable);
     }
