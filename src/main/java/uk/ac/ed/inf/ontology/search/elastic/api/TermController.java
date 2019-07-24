@@ -36,11 +36,11 @@ public class TermController {
     }
 
     @GetMapping("/list")
-    List<Term> findByNames(@RequestParam("name") List<String> names) {
-        return termFacade.findAll(names);
+    List<Term> findTerms(@RequestParam("id") List<String> ids) {
+        return termFacade.findAll(ids);
     }
 
-    @GetMapping("/namespaces")
+    @GetMapping("/namespace")
     List<String> listNamespaces() {
         return termFacade.listNamespaces();
     }

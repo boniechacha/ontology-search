@@ -10,9 +10,10 @@
     </parent>
     <groupId>uk.ac.ed.inf.ontology</groupId>
     <artifactId>ontology-search</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>ontology-search</name>
-    <description>Demo project for Spring Boot</description>
+    <packaging>jar</packaging>
+    <description>A multiple ontology term search engine</description>
 
     <properties>
         <java.version>12</java.version>

@@ -8,9 +8,4 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-public interface TermRepository extends ElasticsearchRepository<Term, String> {
-    List<Term> findAllByNameIn(Collection<String> names);
-
-    Term findFirstByName(String name);
-
-}
+public interface TermRepository extends ElasticsearchRepository<Term, String> { }

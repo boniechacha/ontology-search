@@ -48,8 +48,8 @@ public class TermFacade {
         return termService.query(q, namespace.orElse(""), pageable);
     }
 
-    public List<Term> findAll(Collection<String> names) {
-        return termService.findAll(names);
+    public List<Term> findAll(Collection<String> ids) {
+        return termService.findAll(ids);
     }
 
     public List<String> listNamespaces() {

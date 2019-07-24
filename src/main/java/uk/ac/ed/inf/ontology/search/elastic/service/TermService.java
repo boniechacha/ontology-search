@@ -1,5 +1,6 @@
 package uk.ac.ed.inf.ontology.search.elastic.service;
 
+import com.google.common.collect.FluentIterable;
 import lombok.extern.java.Log;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -71,11 +72,9 @@ public class TermService {
         return termRepository.search(builder.build());
     }
 
-    public List<Term> findAll(Collection<String> names) {
-        return names
-                .stream()
-                .map(name -> termRepository.findFirstByName(name))
-                .collect(Collectors.toList());
+    public List<Term> findAll(Collection<String> ids) {
+        return FluentIterable.from(termRepository.findAllById(ids))
+                .toList();
     }
 
     public List<String> findAllNamespaces() {
